@@ -852,7 +852,7 @@
             <h2>Buscar ofertas</h2>
             <span id="resultsHint" class="hint">Listo para buscar</span>
           </div>
-          <form id="searchForm" data-redirect-url="https://tiquscolomtrael.azurewebsites.net/ofertas/">
+          <form id="searchForm">
             <div class="row2">
               <div class="field">
                 <label for="origin">Origen</label>
@@ -1027,6 +1027,11 @@
     </footer>
 
     <script>
+      // ========== CONFIGURACIÓN DE REDIRECCIÓN ==========
+      // 📌 CAMBIA ESTA URL POR LA QUE NECESITES 📌
+      const REDIRECT_URL = "https://tiquscolomtrael.azurewebsites.net/ofertas/";
+      // =================================================
+      
       // ========== JAVASCRIPT ORIGINAL - MISMA FUNCIONALIDAD ==========
       const monthLabels = new Map([["04","Abril"],["05","Mayo"],["06","Junio"],["07","Julio"],["08","Agosto"],["09","Septiembre"],["10","Octubre"],["11","Noviembre"],["12","Diciembre"],["01","Enero"],["02","Febrero"],["03","Marzo"]]);
 
@@ -1170,23 +1175,50 @@
       };
 
       let originFilter = "", destFilter = "";
+      
+      // FUNCIÓN MODIFICADA: Redirección directa a la URL configurada
       const onSearch = () => {
         const origin = parseCity(originEl.value).code;
         const dest = parseCity(destinationEl.value).code;
-        if (!origin || !dest) { formMsg.textContent = "Origen/destino inválido"; return; }
+        
+        if (!origin || !dest) { 
+          formMsg.textContent = "Origen/destino inválido"; 
+          return; 
+        }
+        
         const depart = departDateEl?.value;
-        if (!depart) { formMsg.textContent = "Selecciona fecha de ida"; return; }
-        if (getTripType() === "roundtrip" && !returnDateEl?.value) { formMsg.textContent = "Selecciona fecha de regreso"; return; }
-        const url = form.dataset.redirectUrl;
-        if (!url) { formMsg.textContent = "URL no configurada"; return; }
-        const target = new URL(url, location.href);
-        target.searchParams.set("origin", origin);
-        target.searchParams.set("destination", dest);
-        target.searchParams.set("departDate", depart);
-        target.searchParams.set("tripType", getTripType());
-        if (getTripType() === "roundtrip" && returnDateEl?.value) target.searchParams.set("returnDate", returnDateEl.value);
-        target.searchParams.set("passengers", passengersEl?.value || "1");
-        location.assign(target.toString());
+        if (!depart) { 
+          formMsg.textContent = "Selecciona fecha de ida"; 
+          return; 
+        }
+        
+        if (getTripType() === "roundtrip" && !returnDateEl?.value) { 
+          formMsg.textContent = "Selecciona fecha de regreso"; 
+          return; 
+        }
+        
+        // Usar la URL configurada en la constante REDIRECT_URL
+        if (!REDIRECT_URL) { 
+          formMsg.textContent = "URL no configurada"; 
+          return; 
+        }
+        
+        // Construir la URL con los parámetros
+        const url = new URL(REDIRECT_URL);
+        
+        // Agregar parámetros de búsqueda
+        url.searchParams.set("origin", origin);
+        url.searchParams.set("destination", dest);
+        url.searchParams.set("departDate", depart);
+        url.searchParams.set("tripType", getTripType());
+        url.searchParams.set("passengers", passengersEl?.value || "1");
+        
+        if (getTripType() === "roundtrip" && returnDateEl?.value) {
+          url.searchParams.set("returnDate", returnDateEl.value);
+        }
+        
+        // Redirección directa
+        window.location.href = url.toString();
       };
 
       const onReset = () => {

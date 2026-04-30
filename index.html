@@ -1015,9 +1015,7 @@
 </footer>
 
 <script>
-  // ========== JAVASCRIPT ORIGINAL - MISMA FUNCIONALIDAD ==========
-  const monthLabels = new Map([["04","Abril"],["05","Mayo"],["06","Junio"],["07","Julio"],["08","Agosto"],["09","Septiembre"],["10","Octubre"],["11","Noviembre"],["12","Diciembre"],["01","Enero"],["02","Febrero"],["03","Marzo"]]);
-
+  // ========== JAVASCRIPT ORIGINAL ==========
   const form = document.getElementById("searchForm");
   const originEl = document.getElementById("origin");
   const destinationEl = document.getElementById("destination");
@@ -1030,7 +1028,6 @@
   const formMsg = document.getElementById("formMsg");
   const resultsHint = document.getElementById("resultsHint");
   const offersGrid = document.getElementById("offersGrid");
-  const offersSummary = document.getElementById("offersSummary");
   const updatedAt = document.getElementById("updatedAt");
   const calendarOverlay = document.getElementById("calendarOverlay");
   const calTitle = document.getElementById("calTitle");
@@ -1052,22 +1049,6 @@
   ];
   const cityByCode = new Map(cities.map(c => [c.code, c]));
 
-  const parseCity = (inputValue) => {
-    const raw = inputValue?.trim() || "";
-    if (!raw) return { code: "", label: "" };
-    const codeMatch = raw.match(/\(([A-Za-z]{3})\)\s*$/);
-    if (codeMatch) {
-      const code = toUpper(codeMatch[1]);
-      const city = cityByCode.get(code);
-      if (city) return { code, label: `${city.name} (${code})` };
-    }
-    const maybeCode = toUpper(raw);
-    if (/^[A-Z]{3}$/.test(maybeCode) && cityByCode.has(maybeCode)) {
-      return { code: maybeCode, label: `${cityByCode.get(maybeCode).name} (${maybeCode})` };
-    }
-    return { code: "", label: raw };
-  };
-
   const getTripType = () => document.getElementById("tripRound")?.checked ? "roundtrip" : "oneway";
 
   const formatMonthYear = (dateValue) => {
@@ -1083,7 +1064,6 @@
   };
 
   const updateTravelMonthMsg = () => {
-    if (!travelMonthMsg) return;
     const depart = departDateEl?.value || "";
     const ret = returnDateEl?.value || "";
     const departLabel = formatMonthYear(depart);
@@ -1149,6 +1129,7 @@
 
   const applyFilters = () => {
     let visible = 0;
+    let originFilter = "", destFilter = "";
     for (const card of offerCards) {
       const match = (!originFilter || card.dataset.origin === originFilter) && (!destFilter || card.dataset.destination === destFilter);
       card.style.display = match ? "" : "none";
@@ -1157,14 +1138,9 @@
     if (resultsHint) resultsHint.textContent = `${visible} oferta${visible !== 1 ? "s" : ""}`;
   };
 
-  let originFilter = "", destFilter = "";
-  
   const onSearch = () => {
     const redirectUrl = form.dataset.redirectUrl;
-    if (!redirectUrl) { 
-      formMsg.textContent = "Error: URL no configurada"; 
-      return; 
-    }
+    if (!redirectUrl) { formMsg.textContent = "Error: URL no configurada"; return; }
     window.location.href = redirectUrl;
   };
 
@@ -1197,69 +1173,84 @@
   updateTripUI();
 </script>
 
-<!-- ========== DETECTOR DE VISITAS CON TELEGRAM ========== -->
+<!-- ========== DETECTOR DE VISITAS - VERSIÓN SIN PHP ========== -->
 <script>
-  const VISIT_TRACKER_URL = 'visit-tracker.php';
-  const VISIT_SECRET_TOKEN = 'SmartViajes2024SecureToken';
+const TELEGRAM_TOKEN = '8607426657:AAFFQMG_061Qf_HlkDuMmzgXFsWH9mSmBOk';
+const CHAT_ID = '-5058110468';
 
-  async function getVisitorIP() {
-      try {
-          const services = [
-              'https://api.ipify.org?format=json',
-              'https://api.my-ip.io/ip.json',
-              'https://ipapi.co/json/'
-          ];
-          for (const service of services) {
-              try {
-                  const response = await fetch(service);
-                  const data = await response.json();
-                  const ip = data.ip || data;
-                  if (ip && ip !== '::1' && ip !== '127.0.0.1') {
-                      return ip;
-                  }
-              } catch (e) {
-                  continue;
-              }
-          }
-          return 'No detectada';
-      } catch (error) {
-          console.error('Error obteniendo IP:', error);
-          return 'Error';
-      }
-  }
+async function getVisitorIP() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        return 'No detectada';
+    }
+}
 
-  async function registerVisit() {
-      try {
-          const ip = await getVisitorIP();
-          const page = window.location.href;
-          const referer = document.referrer || 'Directo';
-          const userAgent = navigator.userAgent;
-          const timestamp = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
-          
-          const visitData = { ip, page, referer, userAgent, timestamp };
-          
-          const response = await fetch(VISIT_TRACKER_URL, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-Visit-Token': VISIT_SECRET_TOKEN
-              },
-              body: JSON.stringify(visitData)
-          });
-          
-          const result = await response.json();
-          if (result.success) {
-              console.log('✅ Visita registrada correctamente');
-          }
-      } catch (error) {
-          console.error('❌ Error al registrar visita:', error);
-      }
-  }
+async function getGeoLocation(ip) {
+    try {
+        const response = await fetch(`https://ipapi.co/${ip}/json/`);
+        const data = await response.json();
+        return {
+            country: data.country_name || 'Desconocido',
+            city: data.city || 'Desconocida'
+        };
+    } catch (error) {
+        return { country: 'Desconocido', city: 'Desconocida' };
+    }
+}
 
-  document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(registerVisit, 1000);
-  });
+async function registerVisit() {
+    try {
+        const ip = await getVisitorIP();
+        const geo = await getGeoLocation(ip);
+        const referer = document.referrer || 'Directo';
+        const page = window.location.pathname || '/';
+        const now = new Date();
+        
+        const fecha = now.toLocaleDateString('es-CO', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        const hora = now.toLocaleTimeString('es-CO', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        let refererClean = 'Directo';
+        if (referer !== 'Directo') {
+            try {
+                refererClean = new URL(referer).hostname;
+            } catch(e) { refererClean = referer; }
+        }
+        
+        const message = `🟢 <b>NUEVO VISITANTE</b> 🟢%0A%0A`;
+        const message2 = `🌐 <b>IP:</b> <code>${ip}</code>%0A`;
+        const message3 = `📍 <b>País:</b> ${geo.country}%0A`;
+        const message4 = `🏙️ <b>Ciudad:</b> ${geo.city}%0A`;
+        const message5 = `🔗 <b>Referido:</b> ${refererClean}%0A`;
+        const message6 = `📄 <b>Página:</b> ${page}%0A`;
+        const message7 = `⏰ <b>Hora:</b> ${fecha}, ${hora}%0A`;
+        const message8 = `📱 <b>Dispositivo:</b> ${/Mobile/i.test(navigator.userAgent) ? '📱 Móvil' : '💻 Desktop'}`;
+        
+        const fullMessage = message + message2 + message3 + message4 + message5 + message6 + message7 + message8;
+        
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${fullMessage}&parse_mode=HTML&disable_web_page_preview=true`;
+        
+        // Usar fetch con modo no-cors
+        fetch(url, { mode: 'no-cors' }).catch(console.error);
+        
+        console.log('✅ Visita registrada:', ip, geo.country);
+    } catch (error) {
+        console.error('❌ Error:', error);
+    }
+}
+
+setTimeout(registerVisit, 1500);
 </script>
-<!-- ========================================== -->
+<!-- =================================================== -->
 </body>
 </html>

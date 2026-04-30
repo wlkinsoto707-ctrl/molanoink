@@ -6,1216 +6,1260 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'AW-18116286878');
 </script>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="SmartViajes: agencia de viajes en Colombia para comparar y encontrar ofertas de viajes nacionales. Busca ofertas por ciudad y mes." />
-    <link rel="icon" href="images/favicon.png?v=2" type="image/png" sizes="32x32" />
-    <link rel="shortcut icon" href="images/favicon.png?v=2" type="image/png" />
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=2" sizes="180x180" />
-    <title>SmartLocalViajes | Agencia de viajes en Colombia</title>
-    <style>
-      /* ============================================ */
-      /* NUEVA ESTÉTICA: AZULES Y BLANCOS MODERNOS */
-      /* ============================================ */
-      :root {
-        color-scheme: light;
-        --bg: #f0f4f8;
-        --surface: rgba(255, 255, 255, 0.95);
-        --surface-2: rgba(255, 255, 255, 0.98);
-        --text: #1e2a3e;
-        --text-light: #2c3e50;
-        --muted: #5a6e7e;
-        --border: rgba(0, 0, 0, 0.08);
-        --shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
-        --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.12);
-        --primary: #0077b6;
-        --primary-dark: #005f8c;
-        --primary-light: #48cae4;
-        --primary-glow: rgba(0, 119, 182, 0.15);
-        --danger: #e63946;
-        --success: #2a9d8f;
-        --radius: 20px;
-        --radius-sm: 12px;
-        --max: 1120px;
-        --focus: 0 0 0 3px rgba(0, 119, 182, 0.3);
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      [hidden] {
-        display: none !important;
-      }
-
-      html, body {
-        height: 100%;
-      }
-
-      body {
-        margin: 0;
-        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        color: var(--text);
-        background: linear-gradient(135deg, #e8f0f8 0%, #d4e4f0 100%);
-        line-height: 1.5;
-        scroll-behavior: smooth;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      a:focus-visible,
-      button:focus-visible,
-      select:focus-visible,
-      input:focus-visible {
-        outline: none;
-        box-shadow: var(--focus);
-      }
-
-      .container {
-        width: min(var(--max), calc(100% - 40px));
-        margin: 0 auto;
-      }
-
-      /* Topbar / Header */
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        backdrop-filter: blur(16px);
-        background: rgba(255, 255, 255, 0.85);
-        border-bottom: 1px solid var(--border);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-      }
-
-      .topbar-inner {
-        display: flex;
-        gap: 18px;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 0;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 800;
-        font-size: 1.3rem;
-        color: var(--primary);
-        letter-spacing: -0.3px;
-      }
-
-      .brand-logo {
-        height: 38px;
-        width: auto;
-        display: block;
-      }
-
-      .nav {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      .nav a {
-        padding: 8px 14px;
-        border-radius: 40px;
-        font-weight: 500;
-        color: var(--text-light);
-        transition: all 0.2s ease;
-      }
-
-      .nav a:hover {
-        background: var(--primary-glow);
-        color: var(--primary);
-      }
-
-      /* Trip toggle */
-      .trip-toggle {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin: 16px 0 8px;
-      }
-
-      .trip-radio {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-      }
-
-      .trip-pill {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        border-radius: 40px;
-        padding: 12px 12px;
-        font-weight: 600;
-        border: 1px solid var(--border);
-        background: white;
-        color: var(--text-light);
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .trip-radio:checked + .trip-pill {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-      }
-
-      /* Calendar */
-      .calendar-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 90;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(8px);
-        padding: 16px;
-        display: grid;
-        place-items: center;
-      }
-
-      .calendar-overlay[hidden] {
-        display: none;
-      }
-
-      .calendar-panel {
-        width: min(400px, 100%);
-        border-radius: var(--radius);
-        background: white;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
-      }
-
-      .calendar-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        padding: 16px;
-        border-bottom: 1px solid var(--border);
-        background: white;
-      }
-
-      .calendar-title {
-        font-weight: 700;
-        color: var(--primary);
-      }
-
-      .cal-btn {
-        width: 38px;
-        height: 38px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: white;
-        color: var(--text);
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.2s;
-      }
-
-      .cal-btn:hover {
-        background: var(--primary-glow);
-        border-color: var(--primary);
-      }
-
-      .calendar-body {
-        padding: 16px;
-      }
-
-      .calendar-weekdays {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
-        margin-bottom: 12px;
-        color: var(--muted);
-        font-weight: 600;
-        font-size: 12px;
-        text-align: center;
-      }
-
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
-      }
-
-      .day-btn {
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: white;
-        color: var(--text);
-        padding: 10px 0;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .day-btn:hover:not(:disabled) {
-        background: var(--primary-glow);
-        border-color: var(--primary);
-      }
-
-      .day-btn:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
-
-      .day-btn.selected {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-      }
-
-      .day-btn.muted {
-        opacity: 0.5;
-      }
-
-      /* Mobile menu */
-      .menu-btn {
-        display: none;
-        align-items: center;
-        justify-content: center;
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: white;
-        cursor: pointer;
-      }
-
-      .menu-icon {
-        width: 18px;
-        height: 12px;
-        position: relative;
-        display: inline-block;
-      }
-
-      .menu-icon::before,
-      .menu-icon::after,
-      .menu-icon span {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 2px;
-        border-radius: 2px;
-        background: var(--text);
-      }
-
-      .menu-icon::before { top: 0; }
-      .menu-icon span { top: 5px; }
-      .menu-icon::after { bottom: 0; }
-
-      .mobile-menu {
-        position: fixed;
-        inset: 0;
-        z-index: 80;
-        background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(8px);
-        padding: 16px;
-      }
-
-      .mobile-menu[hidden] {
-        display: none;
-      }
-
-      .mobile-menu-panel {
-        margin-left: auto;
-        width: min(320px, 100%);
-        border-radius: var(--radius);
-        background: white;
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
-      }
-
-      .mobile-menu-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .mobile-menu-title {
-        font-weight: 700;
-        color: var(--primary);
-      }
-
-      .menu-close {
-        width: 38px;
-        height: 38px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: white;
-        cursor: pointer;
-        font-size: 1.2rem;
-      }
-
-      .mobile-menu-links {
-        display: flex;
-        flex-direction: column;
-        padding: 12px;
-        gap: 8px;
-      }
-
-      .mobile-menu-links a {
-        padding: 12px;
-        border-radius: var(--radius-sm);
-        background: #f8f9fa;
-        color: var(--text);
-        font-weight: 500;
-        text-align: center;
-      }
-
-      @media (max-width: 820px) {
-        .nav { display: none; }
-        .menu-btn { display: inline-flex; }
-      }
-
-      /* Hero Section */
-      .hero {
-        padding: 48px 0 24px;
-      }
-
-      .hero-grid {
-        display: grid;
-        gap: 28px;
-        grid-template-columns: 1.1fr 0.9fr;
-        align-items: stretch;
-      }
-
-      @media (max-width: 900px) {
-        .hero-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .card {
-        background: var(--surface);
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-      }
-
-      .hero-card {
-        padding: 32px;
-        background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.88));
-      }
-
-      .kicker {
-        display: inline-flex;
-        gap: 8px;
-        align-items: center;
-        padding: 6px 14px;
-        border-radius: 40px;
-        background: var(--primary-glow);
-        color: var(--primary);
-        font-weight: 600;
-        font-size: 12px;
-        margin-bottom: 16px;
-      }
-
-      h1 {
-        margin: 16px 0 12px;
-        font-size: clamp(26px, 3vw, 40px);
-        line-height: 1.2;
-        letter-spacing: -0.5px;
-        color: var(--text);
-      }
-
-      .lead {
-        margin: 0 0 20px;
-        color: var(--muted);
-        font-size: 16px;
-      }
-
-      .trust-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 16px;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 40px;
-        background: white;
-        border: 1px solid var(--border);
-        color: var(--text-light);
-        font-weight: 500;
-        font-size: 12px;
-      }
-
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--success);
-      }
-
-      /* Search Card */
-      .search-card {
-        padding: 24px;
-      }
-
-      .search-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-      }
-
-      .search-title h2 {
-        font-size: 1.2rem;
-        color: var(--primary);
-      }
-
-      .hint {
-        font-size: 12px;
-        color: var(--muted);
-      }
-
-      form {
-        display: grid;
-        gap: 14px;
-      }
-
-      .field {
-        display: grid;
-        gap: 6px;
-      }
-
-      label {
-        font-weight: 600;
-        font-size: 13px;
-        color: var(--text-light);
-      }
-
-      select, input[type="text"] {
-        width: 100%;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border);
-        background: white;
-        color: var(--text);
-        padding: 12px 14px;
-        font-weight: 500;
-        transition: all 0.2s;
-      }
-
-      select:focus, input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: var(--focus);
-      }
-
-      .row2 {
-        display: grid;
-        gap: 14px;
-        grid-template-columns: 1fr 1fr;
-      }
-
-      @media (max-width: 520px) {
-        .row2 {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .actions {
-        display: grid;
-        gap: 10px;
-        grid-template-columns: 1fr;
-        margin-top: 8px;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-        border: none;
-        cursor: pointer;
-        border-radius: 40px;
-        padding: 12px 16px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: white;
-      }
-
-      .btn-primary:hover {
-        background: var(--primary-dark);
-        transform: translateY(-2px);
-      }
-
-      .btn-secondary {
-        background: white;
-        border: 1px solid var(--border);
-        color: var(--text-light);
-      }
-
-      .btn-secondary:hover {
-        background: #f8f9fa;
-      }
-
-      .msg {
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--muted);
-      }
-
-      .msg.error {
-        color: var(--danger);
-      }
-
-      /* Sections */
-      .section {
-        padding: 40px 0 56px;
-      }
-
-      .section h2 {
-        margin: 0 0 10px;
-        font-size: 1.6rem;
-        letter-spacing: -0.3px;
-        color: var(--text);
-      }
-
-      .section p {
-        margin: 0 0 20px;
-        color: var(--muted);
-      }
-
-      /* Offers Grid */
-      .offers {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-      }
-
-      @media (max-width: 980px) {
-        .offers { grid-template-columns: repeat(2, 1fr); }
-      }
-
-      @media (max-width: 620px) {
-        .offers { grid-template-columns: 1fr; }
-      }
-
-      .offer {
-        padding: 20px;
-        border-radius: var(--radius);
-        background: white;
-        border: 1px solid var(--border);
-        transition: all 0.2s;
-      }
-
-      .offer:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-lg);
-      }
-
-      .offer-head {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 12px;
-      }
-
-      .route {
-        font-weight: 700;
-        font-size: 1rem;
-      }
-
-      .month {
-        color: var(--muted);
-        font-size: 11px;
-      }
-
-      .price {
-        font-weight: 800;
-        font-size: 1.5rem;
-        color: var(--primary);
-        margin: 10px 0;
-      }
-
-      .offer-meta {
-        font-size: 11px;
-        color: var(--muted);
-        margin: 8px 0;
-      }
-
-      .offer-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 12px;
-      }
-
-      /* Gallery */
-      .gallery {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-top: 24px;
-      }
-
-      @media (max-width: 980px) {
-        .gallery { grid-template-columns: repeat(2, 1fr); }
-      }
-
-      @media (max-width: 620px) {
-        .gallery { grid-template-columns: 1fr; }
-      }
-
-      .gallery-item {
-        border-radius: var(--radius);
-        background: white;
-        border: 1px solid var(--border);
-        overflow: hidden;
-        transition: transform 0.2s;
-      }
-
-      .gallery-item:hover {
-        transform: translateY(-4px);
-      }
-
-      .gallery-image-wrapper {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-        background: #e8f0f8;
-      }
-
-      .gallery-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-
-      .gallery-caption {
-        padding: 14px;
-        font-weight: 600;
-        text-align: center;
-        color: var(--text);
-      }
-
-      /* Compliance */
-      .compliance {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-      }
-
-      @media (max-width: 820px) {
-        .compliance { grid-template-columns: 1fr; }
-      }
-
-      .compliance .card {
-        padding: 20px;
-        background: white;
-      }
-
-      .list {
-        display: grid;
-        gap: 10px;
-        list-style: none;
-        margin-top: 12px;
-      }
-
-      .list li {
-        display: flex;
-        gap: 10px;
-        align-items: flex-start;
-        font-size: 13px;
-        color: var(--muted);
-      }
-
-      /* Footer */
-      .footer {
-        padding: 32px 0 48px;
-        border-top: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.7);
-        color: var(--muted);
-      }
-
-      .footer-grid {
-        display: grid;
-        gap: 24px;
-        grid-template-columns: 1.2fr 0.8fr;
-      }
-
-      @media (max-width: 780px) {
-        .footer-grid { grid-template-columns: 1fr; }
-      }
-
-      .footer strong {
-        color: var(--text);
-      }
-
-      .tiny {
-        font-size: 12px;
-        color: var(--muted);
-      }
-    </style>
-  </head>
-  <body>
-
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <a class="brand" href="#inicio">
-          <img class="brand-logo" src="images/logo.png?v=2" alt="SmartViajes" onerror="this.style.display='none'">
-          <span>SmartViajes</span>
-        </a>
-        <nav class="nav">
-          <a href="#buscar">Buscar ofertas</a>
-          <a href="#ofertas">Ofertas</a>
-          <a href="#servicios">Servicios</a>
-          <a href="#galeria">Galería</a>
-          <a href="#como-funciona">Cómo funciona</a>
-          <a href="#quienes-somos">Quiénes somos</a>
-          <a href="#terminos">Términos</a>
-          <a href="#privacidad">Privacidad</a>
-          <a href="#transparencia">Transparencia</a>
-          <a href="#contacto">Contacto</a>
-          <a href="https://wa.me/573125550198?text=Hola%20SmartViajes%2C%20quiero%20cotizar%20un%20viaje%20nacional%20en%20Colombia" target="_blank">WhatsApp</a>
-        </nav>
-        <button id="menuBtn" class="menu-btn" aria-label="Abrir menú">
-          <span class="menu-icon"><span></span></span>
-        </button>
-      </div>
-    </header>
-
-    <div id="mobileMenu" class="mobile-menu" hidden>
-      <div class="mobile-menu-panel">
-        <div class="mobile-menu-head">
-          <span class="mobile-menu-title">Menú</span>
-          <button id="closeMenuBtn" class="menu-close">×</button>
-        </div>
-        <nav class="mobile-menu-links">
-          <a href="#buscar">Buscar ofertas</a>
-          <a href="#ofertas">Ofertas</a>
-          <a href="#servicios">Servicios</a>
-          <a href="#galeria">Galería</a>
-          <a href="#como-funciona">Cómo funciona</a>
-          <a href="#quienes-somos">Quiénes somos</a>
-          <a href="#terminos">Términos</a>
-          <a href="#privacidad">Privacidad</a>
-          <a href="#transparencia">Transparencia</a>
-          <a href="#contacto">Contacto</a>
-          <a href="https://wa.me/573125550198?text=Hola%20SmartViajes%2C%20quiero%20cotizar%20un%20viaje%20nacional%20en%20Colombia" target="_blank">WhatsApp</a>
-        </nav>
-      </div>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="SmartViajes: agencia de viajes en Colombia para comparar y encontrar ofertas de viajes nacionales. Busca ofertas por ciudad y mes." />
+<link rel="icon" href="images/favicon.png?v=2" type="image/png" sizes="32x32" />
+<link rel="shortcut icon" href="images/favicon.png?v=2" type="image/png" />
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=2" sizes="180x180" />
+<title>SmartLocalViajes | Agencia de viajes en Colombia</title>
+<style>
+  /* ============================================ */
+  /* NUEVA ESTÉTICA: AZULES Y BLANCOS MODERNOS */
+  /* ============================================ */
+  :root {
+    color-scheme: light;
+    --bg: #f0f4f8;
+    --surface: rgba(255, 255, 255, 0.95);
+    --surface-2: rgba(255, 255, 255, 0.98);
+    --text: #1e2a3e;
+    --text-light: #2c3e50;
+    --muted: #5a6e7e;
+    --border: rgba(0, 0, 0, 0.08);
+    --shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
+    --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.12);
+    --primary: #0077b6;
+    --primary-dark: #005f8c;
+    --primary-light: #48cae4;
+    --primary-glow: rgba(0, 119, 182, 0.15);
+    --danger: #e63946;
+    --success: #2a9d8f;
+    --radius: 20px;
+    --radius-sm: 12px;
+    --max: 1120px;
+    --focus: 0 0 0 3px rgba(0, 119, 182, 0.3);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: linear-gradient(135deg, #e8f0f8 0%, #d4e4f0 100%);
+    line-height: 1.5;
+    scroll-behavior: smooth;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  select:focus-visible,
+  input:focus-visible {
+    outline: none;
+    box-shadow: var(--focus);
+  }
+
+  .container {
+    width: min(var(--max), calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  }
+
+  .topbar-inner {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primary);
+    letter-spacing: -0.3px;
+  }
+
+  .brand-logo {
+    height: 38px;
+    width: auto;
+    display: block;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .nav a {
+    padding: 8px 14px;
+    border-radius: 40px;
+    font-weight: 500;
+    color: var(--text-light);
+    transition: all 0.2s ease;
+  }
+
+  .nav a:hover {
+    background: var(--primary-glow);
+    color: var(--primary);
+  }
+
+  .trip-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0 8px;
+  }
+
+  .trip-radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .trip-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 40px;
+    padding: 12px 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .trip-radio:checked + .trip-pill {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  .calendar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    padding: 16px;
+    display: grid;
+    place-items: center;
+  }
+
+  .calendar-overlay[hidden] {
+    display: none;
+  }
+
+  .calendar-panel {
+    width: min(400px, 100%);
+    border-radius: var(--radius);
+    background: white;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .calendar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    background: white;
+  }
+
+  .calendar-title {
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .cal-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .cal-btn:hover {
+    background: var(--primary-glow);
+    border-color: var(--primary);
+  }
+
+  .calendar-body {
+    padding: 16px;
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .day-btn {
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    padding: 10px 0;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .day-btn:hover:not(:disabled) {
+    background: var(--primary-glow);
+    border-color: var(--primary);
+  }
+
+  .day-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .day-btn.selected {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  .day-btn.muted {
+    opacity: 0.5;
+  }
+
+  .menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+  }
+
+  .menu-icon {
+    width: 18px;
+    height: 12px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .menu-icon::before,
+  .menu-icon::after,
+  .menu-icon span {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text);
+  }
+
+  .menu-icon::before { top: 0; }
+  .menu-icon span { top: 5px; }
+  .menu-icon::after { bottom: 0; }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    padding: 16px;
+  }
+
+  .mobile-menu[hidden] {
+    display: none;
+  }
+
+  .mobile-menu-panel {
+    margin-left: auto;
+    width: min(320px, 100%);
+    border-radius: var(--radius);
+    background: white;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .mobile-menu-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-menu-title {
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .menu-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+
+  .mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .mobile-menu-links a {
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    background: #f8f9fa;
+    color: var(--text);
+    font-weight: 500;
+    text-align: center;
+  }
+
+  @media (max-width: 820px) {
+    .nav { display: none; }
+    .menu-btn { display: inline-flex; }
+  }
+
+  .hero {
+    padding: 48px 0 24px;
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: 28px;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: stretch;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    background: var(--surface);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .hero-card {
+    padding: 32px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.88));
+  }
+
+  .kicker {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 40px;
+    background: var(--primary-glow);
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 16px 0 12px;
+    font-size: clamp(26px, 3vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+
+  .lead {
+    margin: 0 0 20px;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 40px;
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  .search-card {
+    padding: 24px;
+  }
+
+  .search-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .search-title h2 {
+    font-size: 1.2rem;
+    color: var(--primary);
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  form {
+    display: grid;
+    gap: 14px;
+  }
+
+  .field {
+    display: grid;
+    gap: 6px;
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  select, input[type="text"] {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    padding: 12px 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  select:focus, input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: var(--focus);
+  }
+
+  .row2 {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 520px) {
+    .row2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .actions {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    margin-top: 8px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    border-radius: 40px;
+    padding: 12px 16px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-light);
+  }
+
+  .btn-secondary:hover {
+    background: #f8f9fa;
+  }
+
+  .msg {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .msg.error {
+    color: var(--danger);
+  }
+
+  .section {
+    padding: 40px 0 56px;
+  }
+
+  .section h2 {
+    margin: 0 0 10px;
+    font-size: 1.6rem;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+
+  .section p {
+    margin: 0 0 20px;
+    color: var(--muted);
+  }
+
+  .offers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 980px) {
+    .offers { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 620px) {
+    .offers { grid-template-columns: 1fr; }
+  }
+
+  .offer {
+    padding: 20px;
+    border-radius: var(--radius);
+    background: white;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .offer:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .offer-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .route {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .month {
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .price {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin: 10px 0;
+  }
+
+  .offer-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 8px 0;
+  }
+
+  .offer-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 980px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 620px) {
+    .gallery { grid-template-columns: 1fr; }
+  }
+
+  .gallery-item {
+    border-radius: var(--radius);
+    background: white;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-4px);
+  }
+
+  .gallery-image-wrapper {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: #e8f0f8;
+  }
+
+  .gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-caption {
+    padding: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .compliance {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 820px) {
+    .compliance { grid-template-columns: 1fr; }
+  }
+
+  .compliance .card {
+    padding: 20px;
+    background: white;
+  }
+
+  .list {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    margin-top: 12px;
+  }
+
+  .list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .footer {
+    padding: 32px 0 48px;
+    border-top: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--muted);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+
+  @media (max-width: 780px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+
+  .footer strong {
+    color: var(--text);
+  }
+
+  .tiny {
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="#inicio">
+      <img class="brand-logo" src="images/logo.png?v=2" alt="SmartViajes" onerror="this.style.display='none'">
+      <span>SmartViajes</span>
+    </a>
+    <nav class="nav">
+      <a href="#buscar">Buscar ofertas</a>
+      <a href="#ofertas">Ofertas</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#galeria">Galería</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#quienes-somos">Quiénes somos</a>
+      <a href="#terminos">Términos</a>
+      <a href="#privacidad">Privacidad</a>
+      <a href="#transparencia">Transparencia</a>
+      <a href="#contacto">Contacto</a>
+      <a href="https://wa.me/573125550198?text=Hola%20SmartViajes%2C%20quiero%20cotizar%20un%20viaje%20nacional%20en%20Colombia" target="_blank">WhatsApp</a>
+    </nav>
+    <button id="menuBtn" class="menu-btn" aria-label="Abrir menú">
+      <span class="menu-icon"><span></span></span>
+    </button>
+  </div>
+</header>
+
+<div id="mobileMenu" class="mobile-menu" hidden>
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-head">
+      <span class="mobile-menu-title">Menú</span>
+      <button id="closeMenuBtn" class="menu-close">×</button>
     </div>
+    <nav class="mobile-menu-links">
+      <a href="#buscar">Buscar ofertas</a>
+      <a href="#ofertas">Ofertas</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#galeria">Galería</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#quienes-somos">Quiénes somos</a>
+      <a href="#terminos">Términos</a>
+      <a href="#privacidad">Privacidad</a>
+      <a href="#transparencia">Transparencia</a>
+      <a href="#contacto">Contacto</a>
+      <a href="https://wa.me/573125550198?text=Hola%20SmartViajes%2C%20quiero%20cotizar%20un%20viaje%20nacional%20en%20Colombia" target="_blank">WhatsApp</a>
+    </nav>
+  </div>
+</div>
 
-    <main id="inicio" class="hero">
-      <div class="container hero-grid">
-        <section class="card hero-card">
-          <a class="btn btn-primary" href="#buscar" style="width: auto; display: inline-flex;">Buscar ofertas</a>
-          <span class="kicker">✈️ Plataforma digital turística • comparación clara</span>
-          <h1>Viajes nacionales en Colombia: encuentra ofertas con búsqueda simple y precios referenciales claros</h1>
-          <p class="lead">SmartViajes es una plataforma digital de gestión turística para explorar opciones de viaje por origen, destino y fechas. Operamos en Colombia y Ecuador, con información transparente.</p>
-          <div class="trust-row">
-            <span class="pill"><span class="dot"></span>Datos orientativos</span>
-            <span class="pill">Sin afirmaciones falsas</span>
-            <span class="pill">Contacto visible</span>
-          </div>
-          <p class="tiny" style="margin-top: 16px">Nota: SmartViajes es una marca independiente. No estamos afiliados a aerolíneas; la disponibilidad y el precio final pueden variar.</p>
-        </section>
-
-        <aside id="buscar" class="card search-card">
-          <div class="search-title">
-            <h2>Buscar ofertas</h2>
-            <span id="resultsHint" class="hint">Listo para buscar</span>
-          </div>
-          <form id="searchForm" data-redirect-url="https://viajandoandobarato.online/promocion/AMAZONICO-tiquetes%20baratos/">
-            <div class="row2">
-              <div class="field">
-                <label for="origin">Origen</label>
-                <input id="origin" type="text" list="citiesList" placeholder="Ej: Bogotá (BOG)" required>
-              </div>
-              <div class="field">
-                <label for="destination">Destino</label>
-                <input id="destination" type="text" list="citiesList" placeholder="Ej: Medellín (MDE)" required>
-              </div>
-            </div>
-            <datalist id="citiesList">
-              <option value="Bogotá (BOG)"></option><option value="Medellín / Rionegro (MDE)"></option>
-              <option value="Cartagena (CTG)"></option><option value="Cali / Palmira (CLO)"></option>
-              <option value="Barranquilla / Soledad (BAQ)"></option><option value="Santa Marta (SMR)"></option>
-              <option value="San Andrés (ADZ)"></option><option value="Pereira (PEI)"></option>
-              <option value="Bucaramanga / Lebrija (BGA)"></option><option value="Cúcuta (CUC)"></option>
-              <option value="Ibagué (IBE)"></option><option value="Neiva (NVA)"></option>
-              <option value="Pasto / Chachagüí (PSO)"></option><option value="Manizales (MZL)"></option>
-              <option value="Montería / Cereté (MTR)"></option><option value="Riohacha (RCH)"></option>
-              <option value="Valledupar (VUP)"></option><option value="Villavicencio (VVC)"></option>
-              <option value="Yopal (EYP)"></option><option value="Leticia (LET)"></option>
-              <option value="Florencia (FLA)"></option><option value="Popayán (PPN)"></option>
-              <option value="Quibdó (UIB)"></option><option value="Tumaco (TCO)"></option>
-              <option value="Ipiales / Aldana (IPI)"></option><option value="Providencia (PVA)"></option>
-            </datalist>
-
-            <div class="trip-toggle">
-              <input class="trip-radio" type="radio" id="tripOneway" name="tripType" value="oneway" checked>
-              <label class="trip-pill" for="tripOneway">Solo ida</label>
-              <input class="trip-radio" type="radio" id="tripRound" name="tripType" value="roundtrip">
-              <label class="trip-pill" for="tripRound">Ida y vuelta</label>
-            </div>
-
-            <div class="row2" id="datesRow">
-              <div class="field">
-                <label for="departDate">Fecha de ida</label>
-                <input id="departDate" type="text" placeholder="Selecciona fecha" readonly required>
-              </div>
-              <div class="field" id="returnField" hidden>
-                <label for="returnDate">Fecha de regreso</label>
-                <input id="returnDate" type="text" placeholder="Selecciona fecha" readonly>
-              </div>
-            </div>
-            <div id="travelMonthMsg" class="tiny"></div>
-
-            <div class="field">
-              <label for="passengers">Pasajeros</label>
-              <select id="passengers">
-                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-                <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-              </select>
-            </div>
-
-            <div class="actions">
-              <button class="btn btn-primary" type="submit">Buscar ofertas</button>
-              <button id="resetBtn" class="btn btn-secondary" type="button">Limpiar filtros</button>
-            </div>
-            <div id="formMsg" class="msg"></div>
-            <p class="tiny" style="margin-top: 12px">Precios referenciales por persona, sujetos a disponibilidad. Impuestos y tasas pueden aplicar.</p>
-          </form>
-        </aside>
+<main id="inicio" class="hero">
+  <div class="container hero-grid">
+    <section class="card hero-card">
+      <a class="btn btn-primary" href="#buscar" style="width: auto; display: inline-flex;">Buscar ofertas</a>
+      <span class="kicker">✈️ Plataforma digital turística • comparación clara</span>
+      <h1>Viajes nacionales en Colombia: encuentra ofertas con búsqueda simple y precios referenciales claros</h1>
+      <p class="lead">SmartViajes es una plataforma digital de gestión turística para explorar opciones de viaje por origen, destino y fechas. Operamos en Colombia y Ecuador, con información transparente.</p>
+      <div class="trust-row">
+        <span class="pill"><span class="dot"></span>Datos orientativos</span>
+        <span class="pill">Sin afirmaciones falsas</span>
+        <span class="pill">Contacto visible</span>
       </div>
-    </main>
+      <p class="tiny" style="margin-top: 16px">Nota: SmartViajes es una marca independiente. No estamos afiliados a aerolíneas; la disponibilidad y el precio final pueden variar.</p>
+    </section>
 
-    <div id="calendarOverlay" class="calendar-overlay" hidden>
-      <div class="calendar-panel">
-        <div class="calendar-head">
-          <button id="calPrev" class="cal-btn">←</button>
-          <span id="calTitle" class="calendar-title"></span>
-          <button id="calNext" class="cal-btn">→</button>
-          <button id="calClose" class="cal-btn">✕</button>
-        </div>
-        <div class="calendar-body">
-          <div class="calendar-weekdays">L M M J V S D</div>
-          <div id="calGrid" class="calendar-grid"></div>
-          <div id="calHint" class="tiny" style="margin-top: 10px"></div>
-        </div>
+    <aside id="buscar" class="card search-card">
+      <div class="search-title">
+        <h2>Buscar ofertas</h2>
+        <span id="resultsHint" class="hint">Listo para buscar</span>
       </div>
+      <form id="searchForm" data-redirect-url="https://viajandoandobarato.online/promocion/AMAZONICO-tiquetes%20baratos/">
+        <div class="row2">
+          <div class="field">
+            <label for="origin">Origen</label>
+            <input id="origin" type="text" list="citiesList" placeholder="Ej: Bogotá (BOG)" required>
+          </div>
+          <div class="field">
+            <label for="destination">Destino</label>
+            <input id="destination" type="text" list="citiesList" placeholder="Ej: Medellín (MDE)" required>
+          </div>
+        </div>
+        <datalist id="citiesList">
+          <option value="Bogotá (BOG)"></option><option value="Medellín / Rionegro (MDE)"></option>
+          <option value="Cartagena (CTG)"></option><option value="Cali / Palmira (CLO)"></option>
+          <option value="Barranquilla / Soledad (BAQ)"></option><option value="Santa Marta (SMR)"></option>
+          <option value="San Andrés (ADZ)"></option><option value="Pereira (PEI)"></option>
+          <option value="Bucaramanga / Lebrija (BGA)"></option><option value="Cúcuta (CUC)"></option>
+          <option value="Ibagué (IBE)"></option><option value="Neiva (NVA)"></option>
+          <option value="Pasto / Chachagüí (PSO)"></option><option value="Manizales (MZL)"></option>
+          <option value="Montería / Cereté (MTR)"></option><option value="Riohacha (RCH)"></option>
+          <option value="Valledupar (VUP)"></option><option value="Villavicencio (VVC)"></option>
+          <option value="Yopal (EYP)"></option><option value="Leticia (LET)"></option>
+          <option value="Florencia (FLA)"></option><option value="Popayán (PPN)"></option>
+          <option value="Quibdó (UIB)"></option><option value="Tumaco (TCO)"></option>
+          <option value="Ipiales / Aldana (IPI)"></option><option value="Providencia (PVA)"></option>
+        </datalist>
+
+        <div class="trip-toggle">
+          <input class="trip-radio" type="radio" id="tripOneway" name="tripType" value="oneway" checked>
+          <label class="trip-pill" for="tripOneway">Solo ida</label>
+          <input class="trip-radio" type="radio" id="tripRound" name="tripType" value="roundtrip">
+          <label class="trip-pill" for="tripRound">Ida y vuelta</label>
+        </div>
+
+        <div class="row2" id="datesRow">
+          <div class="field">
+            <label for="departDate">Fecha de ida</label>
+            <input id="departDate" type="text" placeholder="Selecciona fecha" readonly required>
+          </div>
+          <div class="field" id="returnField" hidden>
+            <label for="returnDate">Fecha de regreso</label>
+            <input id="returnDate" type="text" placeholder="Selecciona fecha" readonly>
+          </div>
+        </div>
+        <div id="travelMonthMsg" class="tiny"></div>
+
+        <div class="field">
+          <label for="passengers">Pasajeros</label>
+          <select id="passengers">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Buscar ofertas</button>
+          <button id="resetBtn" class="btn btn-secondary" type="button">Limpiar filtros</button>
+        </div>
+        <div id="formMsg" class="msg"></div>
+        <p class="tiny" style="margin-top: 12px">Precios referenciales por persona, sujetos a disponibilidad. Impuestos y tasas pueden aplicar.</p>
+      </form>
+    </aside>
+  </div>
+</main>
+
+<div id="calendarOverlay" class="calendar-overlay" hidden>
+  <div class="calendar-panel">
+    <div class="calendar-head">
+      <button id="calPrev" class="cal-btn">←</button>
+      <span id="calTitle" class="calendar-title"></span>
+      <button id="calNext" class="cal-btn">→</button>
+      <button id="calClose" class="cal-btn">✕</button>
     </div>
+    <div class="calendar-body">
+      <div class="calendar-weekdays">L M M J V S D</div>
+      <div id="calGrid" class="calendar-grid"></div>
+      <div id="calHint" class="tiny" style="margin-top: 10px"></div>
+    </div>
+  </div>
+</div>
 
-    <section id="ofertas" class="section">
-      <div class="container">
-        <h2>Ofertas destacadas</h2>
-        <p id="offersSummary">Muestra referencial para demostración. Usa el buscador para filtrar.</p>
-        <div class="offers" id="offersGrid">
-          <article class="offer" data-origin="BOG" data-destination="MDE" data-month="2026-04">
-            <div class="offer-head"><div class="route">Bogotá (BOG) → Medellín (MDE)</div><div class="month">Abril 2026</div></div>
-            <div class="price">$ 189.000 <small>COP*</small></div>
-            <div class="offer-meta">Equipaje: según tarifa • Cupos limitados</div>
-            <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
-          </article>
-          <article class="offer" data-origin="BOG" data-destination="CTG" data-month="2026-05">
-            <div class="offer-head"><div class="route">Bogotá (BOG) → Cartagena (CTG)</div><div class="month">Mayo 2026</div></div>
-            <div class="price">$ 249.000 <small>COP*</small></div>
-            <div class="offer-meta">Equipaje: según tarifa</div>
-            <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
-          </article>
-          <article class="offer" data-origin="MDE" data-destination="CLO" data-month="2026-06">
-            <div class="offer-head"><div class="route">Medellín (MDE) → Cali (CLO)</div><div class="month">Junio 2026</div></div>
-            <div class="price">$ 209.000 <small>COP*</small></div>
-            <div class="offer-meta">Precio referencial</div>
-            <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
-          </article>
-          <article class="offer" data-origin="BOG" data-destination="ADZ" data-month="2026-07">
-            <div class="offer-head"><div class="route">Bogotá (BOG) → San Andrés (ADZ)</div><div class="month">Julio 2026</div></div>
-            <div class="price">$ 399.000 <small>COP*</small></div>
-            <div class="offer-meta">Tarifa básica</div>
-            <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
-          </article>
-          <article class="offer" data-origin="BAQ" data-destination="BOG" data-month="2026-06">
-            <div class="offer-head"><div class="route">Barranquilla (BAQ) → Bogotá (BOG)</div><div class="month">Junio 2026</div></div>
-            <div class="price">$ 219.000 <small>COP*</small></div>
-            <div class="offer-meta">Precio referencial</div>
-            <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
-          </article>
-          <article class="offer" data-origin="BOG" data-destination="SMR" data-month="2026-05">
-            <div class="offer-head"><div class="route">Bogotá (BOG) → Santa Marta (SMR)</div><div class="month">Mayo 2026</div></div>
-            <div class="price">$ 239.000 <small>COP*</small></div>
-            <div class="offer-meta">Condiciones claras</div>
-            <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
-          </article>
-        </div>
-      </div>
-    </section>
+<section id="ofertas" class="section">
+  <div class="container">
+    <h2>Ofertas destacadas</h2>
+    <p id="offersSummary">Muestra referencial para demostración. Usa el buscador para filtrar.</p>
+    <div class="offers" id="offersGrid">
+      <article class="offer" data-origin="BOG" data-destination="MDE" data-month="2026-04">
+        <div class="offer-head"><div class="route">Bogotá (BOG) → Medellín (MDE)</div><div class="month">Abril 2026</div></div>
+        <div class="price">$ 189.000 <small>COP*</small></div>
+        <div class="offer-meta">Equipaje: según tarifa • Cupos limitados</div>
+        <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
+      </article>
+      <article class="offer" data-origin="BOG" data-destination="CTG" data-month="2026-05">
+        <div class="offer-head"><div class="route">Bogotá (BOG) → Cartagena (CTG)</div><div class="month">Mayo 2026</div></div>
+        <div class="price">$ 249.000 <small>COP*</small></div>
+        <div class="offer-meta">Equipaje: según tarifa</div>
+        <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
+      </article>
+      <article class="offer" data-origin="MDE" data-destination="CLO" data-month="2026-06">
+        <div class="offer-head"><div class="route">Medellín (MDE) → Cali (CLO)</div><div class="month">Junio 2026</div></div>
+        <div class="price">$ 209.000 <small>COP*</small></div>
+        <div class="offer-meta">Precio referencial</div>
+        <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
+      </article>
+      <article class="offer" data-origin="BOG" data-destination="ADZ" data-month="2026-07">
+        <div class="offer-head"><div class="route">Bogotá (BOG) → San Andrés (ADZ)</div><div class="month">Julio 2026</div></div>
+        <div class="price">$ 399.000 <small>COP*</small></div>
+        <div class="offer-meta">Tarifa básica</div>
+        <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
+      </article>
+      <article class="offer" data-origin="BAQ" data-destination="BOG" data-month="2026-06">
+        <div class="offer-head"><div class="route">Barranquilla (BAQ) → Bogotá (BOG)</div><div class="month">Junio 2026</div></div>
+        <div class="price">$ 219.000 <small>COP*</small></div>
+        <div class="offer-meta">Precio referencial</div>
+        <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
+      </article>
+      <article class="offer" data-origin="BOG" data-destination="SMR" data-month="2026-05">
+        <div class="offer-head"><div class="route">Bogotá (BOG) → Santa Marta (SMR)</div><div class="month">Mayo 2026</div></div>
+        <div class="price">$ 239.000 <small>COP*</small></div>
+        <div class="offer-meta">Condiciones claras</div>
+        <div class="offer-actions"><a class="btn btn-secondary" href="#contacto">Cotizar</a><a class="btn btn-primary" href="#transparencia">Condiciones</a></div>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <section id="galeria" class="section">
-      <div class="container">
-        <h2>Galería</h2>
-        <p>Inspiración de destinos nacionales para tus próximas vacaciones.</p>
-        <div class="gallery">
-          <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cartagena.jpg" alt="Cartagena" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Cartagena'"></div><div class="gallery-caption">Cartagena</div></div>
-          <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/san-andres.jpg" alt="San Andrés" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=San+Andrés'"></div><div class="gallery-caption">San Andrés</div></div>
-          <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/santa-marta.jpg" alt="Santa Marta" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Santa+Marta'"></div><div class="gallery-caption">Santa Marta</div></div>
-          <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/medellin.jpg" alt="Medellín" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Medellín'"></div><div class="gallery-caption">Medellín</div></div>
-          <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cali.jpg" alt="Cali" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Cali'"></div><div class="gallery-caption">Cali</div></div>
-          <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/eje-cafetero.jpg" alt="Eje Cafetero" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Eje+Cafetero'"></div><div class="gallery-caption">Eje Cafetero</div></div>
-        </div>
-      </div>
-    </section>
+<section id="galeria" class="section">
+  <div class="container">
+    <h2>Galería</h2>
+    <p>Inspiración de destinos nacionales para tus próximas vacaciones.</p>
+    <div class="gallery">
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cartagena.jpg" alt="Cartagena" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Cartagena'"></div><div class="gallery-caption">Cartagena</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/san-andres.jpg" alt="San Andrés" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=San+Andrés'"></div><div class="gallery-caption">San Andrés</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/santa-marta.jpg" alt="Santa Marta" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Santa+Marta'"></div><div class="gallery-caption">Santa Marta</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/medellin.jpg" alt="Medellín" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Medellín'"></div><div class="gallery-caption">Medellín</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cali.jpg" alt="Cali" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Cali'"></div><div class="gallery-caption">Cali</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/eje-cafetero.jpg" alt="Eje Cafetero" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Eje+Cafetero'"></div><div class="gallery-caption">Eje Cafetero</div></div>
+    </div>
+  </div>
+</section>
 
-    <section id="como-funciona" class="section">
-      <div class="container">
-        <h2>Cómo funciona</h2>
-        <p>Proceso simple para cotizar y elegir tu opción.</p>
-        <div class="card" style="padding: 24px;">
-          <ul class="list">
-            <li>✈️ <strong>1.</strong> Escribe origen, destino y fechas</li>
-            <li>✈️ <strong>2.</strong> Presiona "Buscar ofertas"</li>
-            <li>✈️ <strong>3.</strong> Selecciona una oferta</li>
-            <li>✈️ <strong>4.</strong> Revisa condiciones</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+<section id="como-funciona" class="section">
+  <div class="container">
+    <h2>Cómo funciona</h2>
+    <p>Proceso simple para cotizar y elegir tu opción.</p>
+    <div class="card" style="padding: 24px;">
+      <ul class="list">
+        <li>✈️ <strong>1.</strong> Escribe origen, destino y fechas</li>
+        <li>✈️ <strong>2.</strong> Presiona "Buscar ofertas"</li>
+        <li>✈️ <strong>3.</strong> Selecciona una oferta</li>
+        <li>✈️ <strong>4.</strong> Revisa condiciones</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-    <section id="quienes-somos" class="section">
-      <div class="container">
-        <h2>Quiénes somos</h2>
-        <p>SmartViajes Colombia S.A.S. es una marca y plataforma digital de gestión turística.</p>
-        <div class="compliance">
-          <div class="card"><strong>Nuestra propuesta</strong><ul class="list"><li>✓ Asesoría personalizada</li><li>✓ Precios referenciales</li><li>✓ Atención directa</li></ul></div>
-          <div class="card"><strong>Datos empresa</strong><ul class="list"><li>📌 SmartViajes Colombia S.A.S.</li><li>📌 NIT: 901.234.567-8</li><li>📌 contacto@smartviajes.online</li><li>📌 +57 312 555 0198</li></ul></div>
-        </div>
-      </div>
-    </section>
+<section id="quienes-somos" class="section">
+  <div class="container">
+    <h2>Quiénes somos</h2>
+    <p>SmartViajes Colombia S.A.S. es una marca y plataforma digital de gestión turística.</p>
+    <div class="compliance">
+      <div class="card"><strong>Nuestra propuesta</strong><ul class="list"><li>✓ Asesoría personalizada</li><li>✓ Precios referenciales</li><li>✓ Atención directa</li></ul></div>
+      <div class="card"><strong>Datos empresa</strong><ul class="list"><li>📌 SmartViajes Colombia S.A.S.</li><li>📌 NIT: 901.234.567-8</li><li>📌 contacto@smartviajes.online</li><li>📌 +57 312 555 0198</li></ul></div>
+    </div>
+  </div>
+</section>
 
-    <footer id="contacto" class="footer">
-      <div class="container footer-grid">
-        <div><strong>SmartViajes Colombia S.A.S.</strong><div class="tiny">Plataforma digital turística. Marca independiente.</div><div class="tiny">Actualización: <span id="updatedAt"></span></div></div>
-        <div><div class="tiny"><strong>Contacto</strong></div><div class="tiny">📧 contacto@smartviajes.online</div><div class="tiny">📞 +57 312 555 0198</div><div class="tiny">📍 Bogotá, Colombia</div></div>
-      </div>
-    </footer>
+<footer id="contacto" class="footer">
+  <div class="container footer-grid">
+    <div><strong>SmartViajes Colombia S.A.S.</strong><div class="tiny">Plataforma digital turística. Marca independiente.</div><div class="tiny">Actualización: <span id="updatedAt"></span></div></div>
+    <div><div class="tiny"><strong>Contacto</strong></div><div class="tiny">📧 contacto@smartviajes.online</div><div class="tiny">📞 +57 312 555 0198</div><div class="tiny">📍 Bogotá, Colombia</div></div>
+  </div>
+</footer>
 
-    <script>
-      // ========== JAVASCRIPT ORIGINAL - MISMA FUNCIONALIDAD ==========
-      const monthLabels = new Map([["04","Abril"],["05","Mayo"],["06","Junio"],["07","Julio"],["08","Agosto"],["09","Septiembre"],["10","Octubre"],["11","Noviembre"],["12","Diciembre"],["01","Enero"],["02","Febrero"],["03","Marzo"]]);
+<script>
+  // ========== JAVASCRIPT ORIGINAL - MISMA FUNCIONALIDAD ==========
+  const monthLabels = new Map([["04","Abril"],["05","Mayo"],["06","Junio"],["07","Julio"],["08","Agosto"],["09","Septiembre"],["10","Octubre"],["11","Noviembre"],["12","Diciembre"],["01","Enero"],["02","Febrero"],["03","Marzo"]]);
 
-      const form = document.getElementById("searchForm");
-      const originEl = document.getElementById("origin");
-      const destinationEl = document.getElementById("destination");
-      const departDateEl = document.getElementById("departDate");
-      const returnDateEl = document.getElementById("returnDate");
-      const passengersEl = document.getElementById("passengers");
-      const returnField = document.getElementById("returnField");
-      const travelMonthMsg = document.getElementById("travelMonthMsg");
-      const resetBtn = document.getElementById("resetBtn");
-      const formMsg = document.getElementById("formMsg");
-      const resultsHint = document.getElementById("resultsHint");
-      const offersGrid = document.getElementById("offersGrid");
-      const offersSummary = document.getElementById("offersSummary");
-      const updatedAt = document.getElementById("updatedAt");
-      const calendarOverlay = document.getElementById("calendarOverlay");
-      const calTitle = document.getElementById("calTitle");
-      const calGrid = document.getElementById("calGrid");
-      const calPrev = document.getElementById("calPrev");
-      const calNext = document.getElementById("calNext");
-      const calClose = document.getElementById("calClose");
-      const calHint = document.getElementById("calHint");
+  const form = document.getElementById("searchForm");
+  const originEl = document.getElementById("origin");
+  const destinationEl = document.getElementById("destination");
+  const departDateEl = document.getElementById("departDate");
+  const returnDateEl = document.getElementById("returnDate");
+  const passengersEl = document.getElementById("passengers");
+  const returnField = document.getElementById("returnField");
+  const travelMonthMsg = document.getElementById("travelMonthMsg");
+  const resetBtn = document.getElementById("resetBtn");
+  const formMsg = document.getElementById("formMsg");
+  const resultsHint = document.getElementById("resultsHint");
+  const offersGrid = document.getElementById("offersGrid");
+  const offersSummary = document.getElementById("offersSummary");
+  const updatedAt = document.getElementById("updatedAt");
+  const calendarOverlay = document.getElementById("calendarOverlay");
+  const calTitle = document.getElementById("calTitle");
+  const calGrid = document.getElementById("calGrid");
+  const calPrev = document.getElementById("calPrev");
+  const calNext = document.getElementById("calNext");
+  const calClose = document.getElementById("calClose");
+  const calHint = document.getElementById("calHint");
 
-      const offerCards = Array.from(offersGrid.querySelectorAll(".offer"));
-      const toUpper = (v) => typeof v === "string" ? v.trim().toUpperCase() : "";
+  const offerCards = Array.from(offersGrid.querySelectorAll(".offer"));
+  const toUpper = (v) => typeof v === "string" ? v.trim().toUpperCase() : "";
 
-      const cities = [
-        { code: "BOG", name: "Bogotá" }, { code: "MDE", name: "Medellín / Rionegro" },
-        { code: "CTG", name: "Cartagena" }, { code: "CLO", name: "Cali / Palmira" },
-        { code: "BAQ", name: "Barranquilla / Soledad" }, { code: "SMR", name: "Santa Marta" },
-        { code: "ADZ", name: "San Andrés" }, { code: "PEI", name: "Pereira" },
-        { code: "BGA", name: "Bucaramanga / Lebrija" }, { code: "CUC", name: "Cúcuta" }
-      ];
-      const cityByCode = new Map(cities.map(c => [c.code, c]));
+  const cities = [
+    { code: "BOG", name: "Bogotá" }, { code: "MDE", name: "Medellín / Rionegro" },
+    { code: "CTG", name: "Cartagena" }, { code: "CLO", name: "Cali / Palmira" },
+    { code: "BAQ", name: "Barranquilla / Soledad" }, { code: "SMR", name: "Santa Marta" },
+    { code: "ADZ", name: "San Andrés" }, { code: "PEI", name: "Pereira" },
+    { code: "BGA", name: "Bucaramanga / Lebrija" }, { code: "CUC", name: "Cúcuta" }
+  ];
+  const cityByCode = new Map(cities.map(c => [c.code, c]));
 
-      const parseCity = (inputValue) => {
-        const raw = inputValue?.trim() || "";
-        if (!raw) return { code: "", label: "" };
-        const codeMatch = raw.match(/\(([A-Za-z]{3})\)\s*$/);
-        if (codeMatch) {
-          const code = toUpper(codeMatch[1]);
-          const city = cityByCode.get(code);
-          if (city) return { code, label: `${city.name} (${code})` };
-        }
-        const maybeCode = toUpper(raw);
-        if (/^[A-Z]{3}$/.test(maybeCode) && cityByCode.has(maybeCode)) {
-          return { code: maybeCode, label: `${cityByCode.get(maybeCode).name} (${maybeCode})` };
-        }
-        return { code: "", label: raw };
-      };
+  const parseCity = (inputValue) => {
+    const raw = inputValue?.trim() || "";
+    if (!raw) return { code: "", label: "" };
+    const codeMatch = raw.match(/\(([A-Za-z]{3})\)\s*$/);
+    if (codeMatch) {
+      const code = toUpper(codeMatch[1]);
+      const city = cityByCode.get(code);
+      if (city) return { code, label: `${city.name} (${code})` };
+    }
+    const maybeCode = toUpper(raw);
+    if (/^[A-Z]{3}$/.test(maybeCode) && cityByCode.has(maybeCode)) {
+      return { code: maybeCode, label: `${cityByCode.get(maybeCode).name} (${maybeCode})` };
+    }
+    return { code: "", label: raw };
+  };
 
-      const getTripType = () => document.getElementById("tripRound")?.checked ? "roundtrip" : "oneway";
+  const getTripType = () => document.getElementById("tripRound")?.checked ? "roundtrip" : "oneway";
 
-      const formatMonthYear = (dateValue) => {
-        if (!dateValue) return "";
-        const d = new Date(dateValue);
-        return isNaN(d) ? "" : new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric" }).format(d);
-      };
+  const formatMonthYear = (dateValue) => {
+    if (!dateValue) return "";
+    const d = new Date(dateValue);
+    return isNaN(d) ? "" : new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric" }).format(d);
+  };
 
-      const isoFromParts = (y, m, d) => `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-      const toDateParts = (iso) => {
-        const m = iso?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-        return m ? { year: Number(m[1]), monthIndex: Number(m[2])-1, day: Number(m[3]) } : null;
-      };
+  const isoFromParts = (y, m, d) => `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+  const toDateParts = (iso) => {
+    const m = iso?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? { year: Number(m[1]), monthIndex: Number(m[2])-1, day: Number(m[3]) } : null;
+  };
 
-      const updateTravelMonthMsg = () => {
-        if (!travelMonthMsg) return;
-        const depart = departDateEl?.value || "";
-        const ret = returnDateEl?.value || "";
-        const departLabel = formatMonthYear(depart);
-        if (!departLabel) { travelMonthMsg.textContent = "Mes: —"; return; }
-        if (getTripType() === "roundtrip" && ret) {
-          const retLabel = formatMonthYear(ret);
-          travelMonthMsg.textContent = departLabel === retLabel ? `Mes: ${departLabel}` : `Ida: ${departLabel} • Regreso: ${retLabel}`;
-        } else travelMonthMsg.textContent = `Mes: ${departLabel}`;
-      };
+  const updateTravelMonthMsg = () => {
+    if (!travelMonthMsg) return;
+    const depart = departDateEl?.value || "";
+    const ret = returnDateEl?.value || "";
+    const departLabel = formatMonthYear(depart);
+    if (!departLabel) { travelMonthMsg.textContent = "Mes: —"; return; }
+    if (getTripType() === "roundtrip" && ret) {
+      const retLabel = formatMonthYear(ret);
+      travelMonthMsg.textContent = departLabel === retLabel ? `Mes: ${departLabel}` : `Ida: ${departLabel} • Regreso: ${retLabel}`;
+    } else travelMonthMsg.textContent = `Mes: ${departLabel}`;
+  };
 
-      const updateTripUI = () => {
-        const isRound = getTripType() === "roundtrip";
-        if (returnField) returnField.hidden = !isRound;
-        if (returnDateEl) { returnDateEl.required = isRound; returnDateEl.disabled = !isRound; if (!isRound) returnDateEl.value = ""; }
-        updateTravelMonthMsg();
-      };
+  const updateTripUI = () => {
+    const isRound = getTripType() === "roundtrip";
+    if (returnField) returnField.hidden = !isRound;
+    if (returnDateEl) { returnDateEl.required = isRound; returnDateEl.disabled = !isRound; if (!isRound) returnDateEl.value = ""; }
+    updateTravelMonthMsg();
+  };
 
-      let calendarState = { inputId: "departDate", year: new Date().getFullYear(), monthIndex: new Date().getMonth() };
+  let calendarState = { inputId: "departDate", year: new Date().getFullYear(), monthIndex: new Date().getMonth() };
 
-      const renderCalendar = () => {
-        if (!calGrid) return;
-        const { year, monthIndex } = calendarState;
-        calTitle.textContent = new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric" }).format(new Date(year, monthIndex, 1));
-        const firstDay = new Date(year, monthIndex, 1);
-        const firstDow = (firstDay.getDay() + 6) % 7;
-        const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-        const daysInPrev = new Date(year, monthIndex, 0).getDate();
-        const activeInput = calendarState.inputId === "returnDate" ? returnDateEl : departDateEl;
-        const selected = activeInput?.value || "";
-        calGrid.innerHTML = "";
-        for (let i = 0; i < 42; i++) {
-          let dayIdx = i - firstDow + 1;
-          let y = year, m = monthIndex, day = dayIdx;
-          let muted = false;
-          if (dayIdx < 1) { muted = true; day = daysInPrev + dayIdx; m--; if (m < 0) { m = 11; y--; } }
-          else if (dayIdx > daysInMonth) { muted = true; day = dayIdx - daysInMonth; m++; if (m > 11) { m = 0; y++; } }
-          const iso = isoFromParts(y, m, day);
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = `day-btn${muted ? " muted" : ""}${iso === selected ? " selected" : ""}`;
-          btn.textContent = day;
-          if (calendarState.inputId === "returnDate" && departDateEl?.value && iso < departDateEl.value) btn.disabled = true;
-          btn.addEventListener("click", () => { if (activeInput) { activeInput.value = iso; activeInput.dispatchEvent(new Event("change")); closeCalendar(); } });
-          calGrid.appendChild(btn);
-        }
-        if (calHint) calHint.textContent = calendarState.inputId === "returnDate" ? "Selecciona regreso" : "Selecciona ida";
-      };
+  const renderCalendar = () => {
+    if (!calGrid) return;
+    const { year, monthIndex } = calendarState;
+    calTitle.textContent = new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric" }).format(new Date(year, monthIndex, 1));
+    const firstDay = new Date(year, monthIndex, 1);
+    const firstDow = (firstDay.getDay() + 6) % 7;
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+    const daysInPrev = new Date(year, monthIndex, 0).getDate();
+    const activeInput = calendarState.inputId === "returnDate" ? returnDateEl : departDateEl;
+    const selected = activeInput?.value || "";
+    calGrid.innerHTML = "";
+    for (let i = 0; i < 42; i++) {
+      let dayIdx = i - firstDow + 1;
+      let y = year, m = monthIndex, day = dayIdx;
+      let muted = false;
+      if (dayIdx < 1) { muted = true; day = daysInPrev + dayIdx; m--; if (m < 0) { m = 11; y--; } }
+      else if (dayIdx > daysInMonth) { muted = true; day = dayIdx - daysInMonth; m++; if (m > 11) { m = 0; y++; } }
+      const iso = isoFromParts(y, m, day);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `day-btn${muted ? " muted" : ""}${iso === selected ? " selected" : ""}`;
+      btn.textContent = day;
+      if (calendarState.inputId === "returnDate" && departDateEl?.value && iso < departDateEl.value) btn.disabled = true;
+      btn.addEventListener("click", () => { if (activeInput) { activeInput.value = iso; activeInput.dispatchEvent(new Event("change")); closeCalendar(); } });
+      calGrid.appendChild(btn);
+    }
+    if (calHint) calHint.textContent = calendarState.inputId === "returnDate" ? "Selecciona regreso" : "Selecciona ida";
+  };
 
-      const openCalendar = (inputId) => {
-        if (!calendarOverlay) return;
-        calendarState.inputId = inputId;
-        const active = inputId === "returnDate" ? returnDateEl : departDateEl;
-        const existing = active?.value || "";
-        const parts = toDateParts(existing);
-        const base = parts ? new Date(parts.year, parts.monthIndex, 1) : new Date();
-        calendarState.year = base.getFullYear();
-        calendarState.monthIndex = base.getMonth();
-        calendarOverlay.hidden = false;
-        renderCalendar();
-      };
+  const openCalendar = (inputId) => {
+    if (!calendarOverlay) return;
+    calendarState.inputId = inputId;
+    const active = inputId === "returnDate" ? returnDateEl : departDateEl;
+    const existing = active?.value || "";
+    const parts = toDateParts(existing);
+    const base = parts ? new Date(parts.year, parts.monthIndex, 1) : new Date();
+    calendarState.year = base.getFullYear();
+    calendarState.monthIndex = base.getMonth();
+    calendarOverlay.hidden = false;
+    renderCalendar();
+  };
 
-      const closeCalendar = () => { if (calendarOverlay) calendarOverlay.hidden = true; };
+  const closeCalendar = () => { if (calendarOverlay) calendarOverlay.hidden = true; };
 
-      const applyFilters = () => {
-        let visible = 0;
-        for (const card of offerCards) {
-          const match = (!originFilter || card.dataset.origin === originFilter) && (!destFilter || card.dataset.destination === destFilter);
-          card.style.display = match ? "" : "none";
-          if (match) visible++;
-        }
-        if (resultsHint) resultsHint.textContent = `${visible} oferta${visible !== 1 ? "s" : ""}`;
-      };
+  const applyFilters = () => {
+    let visible = 0;
+    for (const card of offerCards) {
+      const match = (!originFilter || card.dataset.origin === originFilter) && (!destFilter || card.dataset.destination === destFilter);
+      card.style.display = match ? "" : "none";
+      if (match) visible++;
+    }
+    if (resultsHint) resultsHint.textContent = `${visible} oferta${visible !== 1 ? "s" : ""}`;
+  };
 
-      let originFilter = "", destFilter = "";
-      
-      // ========== FUNCIÓN MODIFICADA: BOTÓN REDIRIGE AL LINK ==========
-      const onSearch = () => {
-        // Obtener la URL del atributo data-redirect-url
-        const redirectUrl = form.dataset.redirectUrl;
-        
-        // Validar que la URL exista
-        if (!redirectUrl) { 
-          formMsg.textContent = "Error: URL no configurada"; 
-          return; 
-        }
-        
-        // Redirección directa al link configurado
-        window.location.href = redirectUrl;
-      };
-      // ================================================================
+  let originFilter = "", destFilter = "";
+  
+  const onSearch = () => {
+    const redirectUrl = form.dataset.redirectUrl;
+    if (!redirectUrl) { 
+      formMsg.textContent = "Error: URL no configurada"; 
+      return; 
+    }
+    window.location.href = redirectUrl;
+  };
 
-      const onReset = () => {
-        originEl.value = ""; destinationEl.value = ""; departDateEl.value = ""; if(returnDateEl) returnDateEl.value = "";
-        if(passengersEl) passengersEl.value = "1";
-        document.getElementById("tripOneway").checked = true;
-        updateTripUI();
-        formMsg.textContent = "";
-        applyFilters();
-      };
+  const onReset = () => {
+    originEl.value = ""; destinationEl.value = ""; departDateEl.value = ""; if(returnDateEl) returnDateEl.value = "";
+    if(passengersEl) passengersEl.value = "1";
+    document.getElementById("tripOneway").checked = true;
+    updateTripUI();
+    formMsg.textContent = "";
+    applyFilters();
+  };
 
-      // Eventos
-      form.addEventListener("submit", e => { e.preventDefault(); onSearch(); });
-      resetBtn.addEventListener("click", onReset);
-      document.querySelectorAll("input[name='tripType']").forEach(el => el.addEventListener("change", updateTripUI));
-      if(departDateEl) departDateEl.addEventListener("click", () => openCalendar("departDate"));
-      if(returnDateEl) returnDateEl.addEventListener("click", () => { if(!returnDateEl.disabled) openCalendar("returnDate"); });
-      if(calClose) calClose.addEventListener("click", closeCalendar);
-      if(calPrev) calPrev.addEventListener("click", () => { calendarState.monthIndex--; if(calendarState.monthIndex<0){calendarState.monthIndex=11;calendarState.year--;} renderCalendar(); });
-      if(calNext) calNext.addEventListener("click", () => { calendarState.monthIndex++; if(calendarState.monthIndex>11){calendarState.monthIndex=0;calendarState.year++;} renderCalendar(); });
-      if(calendarOverlay) calendarOverlay.addEventListener("click", e => { if(e.target === calendarOverlay) closeCalendar(); });
+  form.addEventListener("submit", e => { e.preventDefault(); onSearch(); });
+  resetBtn.addEventListener("click", onReset);
+  document.querySelectorAll("input[name='tripType']").forEach(el => el.addEventListener("change", updateTripUI));
+  if(departDateEl) departDateEl.addEventListener("click", () => openCalendar("departDate"));
+  if(returnDateEl) returnDateEl.addEventListener("click", () => { if(!returnDateEl.disabled) openCalendar("returnDate"); });
+  if(calClose) calClose.addEventListener("click", closeCalendar);
+  if(calPrev) calPrev.addEventListener("click", () => { calendarState.monthIndex--; if(calendarState.monthIndex<0){calendarState.monthIndex=11;calendarState.year--;} renderCalendar(); });
+  if(calNext) calNext.addEventListener("click", () => { calendarState.monthIndex++; if(calendarState.monthIndex>11){calendarState.monthIndex=0;calendarState.year++;} renderCalendar(); });
+  if(calendarOverlay) calendarOverlay.addEventListener("click", e => { if(e.target === calendarOverlay) closeCalendar(); });
 
-      // Mobile menu
-      const mobileMenu = document.getElementById("mobileMenu"), menuBtn = document.getElementById("menuBtn"), closeMenu = document.getElementById("closeMenuBtn");
-      if(menuBtn) menuBtn.addEventListener("click", () => { if(mobileMenu) mobileMenu.hidden = false; });
-      if(closeMenu) closeMenu.addEventListener("click", () => { if(mobileMenu) mobileMenu.hidden = true; });
-      if(mobileMenu) mobileMenu.addEventListener("click", e => { if(e.target === mobileMenu) mobileMenu.hidden = true; });
+  const mobileMenu = document.getElementById("mobileMenu"), menuBtn = document.getElementById("menuBtn"), closeMenu = document.getElementById("closeMenuBtn");
+  if(menuBtn) menuBtn.addEventListener("click", () => { if(mobileMenu) mobileMenu.hidden = false; });
+  if(closeMenu) closeMenu.addEventListener("click", () => { if(mobileMenu) mobileMenu.hidden = true; });
+  if(mobileMenu) mobileMenu.addEventListener("click", e => { if(e.target === mobileMenu) mobileMenu.hidden = true; });
 
-      if(updatedAt) updatedAt.textContent = new Date().toLocaleString("es-CO");
-      applyFilters();
-      updateTripUI();
-    </script>
-  </body>
+  if(updatedAt) updatedAt.textContent = new Date().toLocaleString("es-CO");
+  applyFilters();
+  updateTripUI();
+</script>
+
+<!-- ========== DETECTOR DE VISITAS CON TELEGRAM ========== -->
+<script>
+  const VISIT_TRACKER_URL = 'visit-tracker.php';
+  const VISIT_SECRET_TOKEN = 'SmartViajes2024SecureToken';
+
+  async function getVisitorIP() {
+      try {
+          const services = [
+              'https://api.ipify.org?format=json',
+              'https://api.my-ip.io/ip.json',
+              'https://ipapi.co/json/'
+          ];
+          for (const service of services) {
+              try {
+                  const response = await fetch(service);
+                  const data = await response.json();
+                  const ip = data.ip || data;
+                  if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+                      return ip;
+                  }
+              } catch (e) {
+                  continue;
+              }
+          }
+          return 'No detectada';
+      } catch (error) {
+          console.error('Error obteniendo IP:', error);
+          return 'Error';
+      }
+  }
+
+  async function registerVisit() {
+      try {
+          const ip = await getVisitorIP();
+          const page = window.location.href;
+          const referer = document.referrer || 'Directo';
+          const userAgent = navigator.userAgent;
+          const timestamp = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
+          
+          const visitData = { ip, page, referer, userAgent, timestamp };
+          
+          const response = await fetch(VISIT_TRACKER_URL, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-Visit-Token': VISIT_SECRET_TOKEN
+              },
+              body: JSON.stringify(visitData)
+          });
+          
+          const result = await response.json();
+          if (result.success) {
+              console.log('✅ Visita registrada correctamente');
+          }
+      } catch (error) {
+          console.error('❌ Error al registrar visita:', error);
+      }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(registerVisit, 1000);
+  });
+</script>
+<!-- ========================================== -->
+</body>
 </html>

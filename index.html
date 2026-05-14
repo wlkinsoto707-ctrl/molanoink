@@ -1,31 +1,4 @@
 <!doctype html>
-<html lang="es">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18116286878"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-18116286878');
-  <!-- Event snippet for Vista de página (1) conversion page -->
-<script>
-  gtag('event', 'conversion', {'send_to': 'AW-18116286878/97aVCOu4yaUcEJ6zwr5D'});
-</script>
-<!-- Event snippet for Vista de página (1) conversion page
-In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
-<script>
-function gtag_report_conversion(url) {
-  var callback = function () {
-    if (typeof(url) != 'undefined') {
-      window.location = url;
-    }
-  };
-  gtag('event', 'conversion', {
-      'send_to': 'AW-18116286878/97aVCOu4yaUcEJ6zwr5D',
-      'event_callback': callback
-  });
-  return false;
-}
 </script>
 </script>
 <head>
@@ -38,7 +11,7 @@ function gtag_report_conversion(url) {
 <title>SmartLocalViajes | Agencia de viajes en Colombia</title>
 <style>
   /* ============================================ */
-  /* NUEVA ESTÉTICA: AZULES Y BLANCOS MODERNOS */
+  /* NUEVA ESTÉTICA: AZUL REY, AMARILLO Y ROJO */
   /* ============================================ */
   :root {
     color-scheme: light;
@@ -51,16 +24,20 @@ function gtag_report_conversion(url) {
     --border: rgba(0, 0, 0, 0.08);
     --shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
     --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.12);
-    --primary: #0077b6;
-    --primary-dark: #005f8c;
-    --primary-light: #48cae4;
-    --primary-glow: rgba(0, 119, 182, 0.15);
-    --danger: #e63946;
+    --primary: #0033a0;
+    --primary-dark: #00247a;
+    --primary-light: #1a4dd4;
+    --primary-glow: rgba(0, 51, 160, 0.12);
+    --yellow: #f5c100;
+    --yellow-dark: #d4a800;
+    --red: #da291c;
+    --red-dark: #b82217;
+    --danger: #da291c;
     --success: #2a9d8f;
     --radius: 20px;
     --radius-sm: 12px;
     --max: 1120px;
-    --focus: 0 0 0 3px rgba(0, 119, 182, 0.3);
+    --focus: 0 0 0 3px rgba(0, 51, 160, 0.3);
   }
 
   * {
@@ -81,7 +58,7 @@ function gtag_report_conversion(url) {
     margin: 0;
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     color: var(--text);
-    background: linear-gradient(135deg, #e8f0f8 0%, #d4e4f0 100%);
+    background: linear-gradient(135deg, #f0f2f5 0%, #e8eaef 100%);
     line-height: 1.5;
     scroll-behavior: smooth;
   }
@@ -109,8 +86,8 @@ function gtag_report_conversion(url) {
     top: 0;
     z-index: 50;
     backdrop-filter: blur(16px);
-    background: rgba(255, 255, 255, 0.85);
-    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom: 2px solid var(--yellow);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   }
 
@@ -443,7 +420,7 @@ function gtag_report_conversion(url) {
     align-items: center;
     padding: 6px 14px;
     border-radius: 40px;
-    background: var(--primary-glow);
+    background: linear-gradient(135deg, rgba(0,51,160,0.1), rgba(245,193,0,0.15));
     color: var(--primary);
     font-weight: 600;
     font-size: 12px;
@@ -589,13 +566,14 @@ function gtag_report_conversion(url) {
   }
 
   .btn-secondary {
-    background: white;
-    border: 1px solid var(--border);
-    color: var(--text-light);
+    background: var(--yellow);
+    color: var(--primary-dark);
+    border: 1px solid var(--yellow-dark);
   }
 
   .btn-secondary:hover {
-    background: #f8f9fa;
+    background: var(--yellow-dark);
+    transform: translateY(-2px);
   }
 
   .msg {
@@ -642,13 +620,17 @@ function gtag_report_conversion(url) {
     padding: 20px;
     border-radius: var(--radius);
     background: white;
-    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    border-right: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     transition: all 0.2s;
   }
 
   .offer:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
+    border-left: 4px solid var(--yellow);
   }
 
   .offer-head {
@@ -686,6 +668,14 @@ function gtag_report_conversion(url) {
     margin-top: 12px;
   }
 
+  .offer-actions .btn-primary {
+    background: var(--red);
+  }
+
+  .offer-actions .btn-primary:hover {
+    background: var(--red-dark);
+  }
+
   .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -711,6 +701,7 @@ function gtag_report_conversion(url) {
 
   .gallery-item:hover {
     transform: translateY(-4px);
+    border-bottom: 3px solid var(--yellow);
   }
 
   .gallery-image-wrapper {
@@ -766,7 +757,7 @@ function gtag_report_conversion(url) {
 
   .footer {
     padding: 32px 0 48px;
-    border-top: 1px solid var(--border);
+    border-top: 3px solid var(--yellow);
     background: rgba(255, 255, 255, 0.7);
     color: var(--muted);
   }
@@ -991,12 +982,12 @@ function gtag_report_conversion(url) {
     <h2>Galería</h2>
     <p>Inspiración de destinos nacionales para tus próximas vacaciones.</p>
     <div class="gallery">
-      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cartagena.jpg" alt="Cartagena" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Cartagena'"></div><div class="gallery-caption">Cartagena</div></div>
-      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/san-andres.jpg" alt="San Andrés" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=San+Andrés'"></div><div class="gallery-caption">San Andrés</div></div>
-      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/santa-marta.jpg" alt="Santa Marta" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Santa+Marta'"></div><div class="gallery-caption">Santa Marta</div></div>
-      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/medellin.jpg" alt="Medellín" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Medellín'"></div><div class="gallery-caption">Medellín</div></div>
-      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cali.jpg" alt="Cali" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Cali'"></div><div class="gallery-caption">Cali</div></div>
-      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/eje-cafetero.jpg" alt="Eje Cafetero" onerror="this.src='https://placehold.co/400x300/0077b6/white?text=Eje+Cafetero'"></div><div class="gallery-caption">Eje Cafetero</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cartagena.jpg" alt="Cartagena" onerror="this.src='https://placehold.co/400x300/da291c/white?text=Cartagena'"></div><div class="gallery-caption">Cartagena</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/san-andres.jpg" alt="San Andrés" onerror="this.src='https://placehold.co/400x300/0033a0/white?text=San+Andrés'"></div><div class="gallery-caption">San Andrés</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/santa-marta.jpg" alt="Santa Marta" onerror="this.src='https://placehold.co/400x300/f5c100/white?text=Santa+Marta'"></div><div class="gallery-caption">Santa Marta</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/medellin.jpg" alt="Medellín" onerror="this.src='https://placehold.co/400x300/0033a0/white?text=Medellín'"></div><div class="gallery-caption">Medellín</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/cali.jpg" alt="Cali" onerror="this.src='https://placehold.co/400x300/da291c/white?text=Cali'"></div><div class="gallery-caption">Cali</div></div>
+      <div class="gallery-item"><div class="gallery-image-wrapper"><img class="gallery-img" src="images/eje-cafetero.jpg" alt="Eje Cafetero" onerror="this.src='https://placehold.co/400x300/f5c100/white?text=Eje+Cafetero'"></div><div class="gallery-caption">Eje Cafetero</div></div>
     </div>
   </div>
 </section>
